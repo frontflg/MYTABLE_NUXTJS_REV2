@@ -114,6 +114,6 @@ export default {
   background: #f5f5f5;
 }
 .v-data-table tr:hover td {
-  background-color: #eee;
+  background-color: #fcffa4;
 }
 </style>
