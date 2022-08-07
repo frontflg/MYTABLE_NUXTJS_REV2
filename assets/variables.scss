@@ -1,0 +1,21 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+$font-size-root: 20px;
+
+.v-data-table td {
+  border: 1px #c0c0c0 solid;
+}
+
+.theme--light.v-data-table.v-data-table--fixed-header thead th {
+  background-color: #b0e0e6;
+  border: 1px #c0c0c0 solid;
+}
+
+.theme--light.v-data-table {
+  border: 1px #c0c0c0 solid;
+}
+
+.theme--light.v-data-table tbody tr.v-data-table__selected {
+  background: yellow !important;
+}
