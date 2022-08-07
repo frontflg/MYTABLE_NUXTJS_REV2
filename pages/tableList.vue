@@ -33,7 +33,7 @@
     >
       <template #[`item.TABLE_NAME`]="{ item }">
         <a :href="`http://localhost:3000/recList?tbl=${item.TABLE_NAME}`">
-          {{ item.TABLE_NAME }}
+          <div style="font-size: 130%">{{ item.TABLE_NAME }}</div>
         </a>
       </template>
       <template #[`item.CREATE_TIME`]="{ item }">
