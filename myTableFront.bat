@@ -1,3 +1,3 @@
-f:
-cd F:\nuxt-mytable-app
+d:
+cd d:\nuxt-mytable-app
 npm run dev
