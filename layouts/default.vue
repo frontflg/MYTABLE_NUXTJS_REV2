@@ -116,6 +116,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'tableList',
           to: '/tableList'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'BOOKLOG',
+          to: '/booklog'
         }
       ],
       miniVariant: false,
