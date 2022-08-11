@@ -96,12 +96,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .v-data-table th {
   background: #8C9EFF;
 }
 .v-data-table td {
   background: #e0e0e0;
+  border: 1px #c0c0c0 solid;
 }
 .v-data-table tr:nth-child(odd) td {
   background: #f5f5f5;
