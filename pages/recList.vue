@@ -90,7 +90,9 @@ export default {
             tbl: this.inTblId
           }
         })
-        this.lists = res
+        const str = JSON.stringify(res)
+        const replaced = str.replace(/T15:00:00.000Z/g, '')
+        this.lists = JSON.parse(replaced)
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
@@ -103,12 +105,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .v-data-table th {
   background: #8C9EFF;
 }
 .v-data-table td {
   background: #e0e0e0;
+  border: 1px #c0c0c0 solid;
 }
 .v-data-table tr:nth-child(odd) td {
   background: #f5f5f5;
