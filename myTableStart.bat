@@ -1,4 +1,3 @@
-f:
 start /min myTableBack.bat
 start /min myTableFront.bat
 timeout /T 180
