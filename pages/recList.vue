@@ -28,7 +28,7 @@
           </VueJsonToCsv>
             &nbsp;&nbsp;
           <v-btn
-            class="primary"
+            class="info"
             @click="home()"
           >
             戻る
