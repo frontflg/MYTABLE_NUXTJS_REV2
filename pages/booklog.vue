@@ -88,7 +88,7 @@
             CSV
           </v-btn>
           <v-btn
-            class="primary"
+            class="success"
             @click="dialogOpen()"
           >
             登録
