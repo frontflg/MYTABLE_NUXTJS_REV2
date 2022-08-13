@@ -90,9 +90,20 @@ export default {
             tbl: this.inTblId
           }
         })
-        const str = JSON.stringify(res)
-        const replaced = str.replace(/T15:00:00.000Z/g, '')
-        this.lists = JSON.parse(replaced)
+        this.lists = res
+        for (const item in this.lists) {
+          for (const subItem in this.lists[item]) {
+            try {
+              const str = this.lists[item][subItem]
+              if (str !== null && str.indexOf('T15:00:00.000Z') > 0) {
+                const dt = new Date(Date.parse(str))
+                const month = ('0' + (dt.getMonth() + 1)).slice(-2)
+                const day = ('0' + dt.getDate()).slice(-2)
+                this.lists[item][subItem] = dt.getFullYear() + '-' + month + '-' + day
+              }
+            } catch (e) { } // 握りつぶす
+          }
+        }
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
