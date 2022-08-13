@@ -364,25 +364,25 @@ export default {
         this.inAuthor = this.book[0].Author
         this.inPublisher = this.book[0].Publisher
         this.inGenre = this.book[0].Genre
-        if (this.book[0].IssueDate) {
-          if (this.book[0].IssueDate.slice(0, 10) === '0000-00-00') {
+        if (this.book[0].IDATE) {
+          if (this.book[0].IDATE === '0000-00-00') {
             this.inIssueDate = ''
           } else {
-            this.inIssueDate = this.book[0].IssueDate.slice(0, 10)
+            this.inIssueDate = this.book[0].IDATE
           }
         }
-        if (this.book[0].GetDate) {
-          if (this.book[0].GetDate.slice(0, 10) === '0000-00-00') {
+        if (this.book[0].GDATE) {
+          if (this.book[0].GDATE === '0000-00-00') {
             this.inGetDate = ''
           } else {
-            this.inGetDate = this.book[0].GetDate.slice(0, 10)
+            this.inGetDate = this.book[0].GDATE
           }
         }
-        if (this.book[0].ReadDate) {
-          if (this.book[0].ReadDate.slice(0, 10) === '0000-00-00') {
+        if (this.book[0].RDATE) {
+          if (this.book[0].RDATE === '0000-00-00') {
             this.inReadDate = ''
           } else {
-            this.inReadDate = this.book[0].ReadDate.slice(0, 10)
+            this.inReadDate = this.book[0].RDATE
           }
         }
         if (this.book[0].Ownership === 1) {
