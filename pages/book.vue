@@ -268,19 +268,19 @@
           <v-col>
             <v-card-actions>
               <v-btn
-                class="error"
+                class="warning"
                 @click="updateItem()"
               >
                 更新
               </v-btn>
               <v-btn
-                class="warning"
+                class="error"
                 @click="deleteItem()"
               >
                 削除
               </v-btn>
               <v-btn
-                class="primary"
+                class="info"
                 @click="home()"
               >
                 戻る
