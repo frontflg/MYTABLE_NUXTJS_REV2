@@ -69,7 +69,8 @@ export default {
           primary: '#00ced1',
           secondary: '#f08080',
           accent: '#9370db',
-          error: '#2f4f4f'
+          warning: '#9c27b0',
+          error: '#ef5350'
         }
       }
     }
