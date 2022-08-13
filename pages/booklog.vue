@@ -147,7 +147,7 @@ export default {
         },
         {
           text: '発行日',
-          value: 'GDATE',
+          value: 'IDATE',
           width: '125'
         }
       ],
