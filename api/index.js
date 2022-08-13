@@ -52,7 +52,7 @@ app.get('/search', function (req, res) { // app.get...(expressの構文)、req=r
 
 app.get('/booklog', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS GDATE,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog', function (error, results) { // booklogテーブルから全てのカラムを取得する
+  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog', function (error, results) { // booklogテーブルから全てのカラムを取得する
     if (error) throw error; // エラー処理
     res.send(results);
   });
@@ -62,7 +62,7 @@ app.get('/booksearch', function (req, res) { // app.get...(expressの構文)、r
   const id = req.query.id;
   console.log('SEARCH ' + id);
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('select * from booklog where ISBN13 = ?', id, function (error, results) { // booklogテーブルから指定の行を取得する
+  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,DATE_FORMAT(GetDate,"%Y-%m-%d") AS GDATE,DATE_FORMAT(ReadDate,"%Y-%m-%d") AS RDATE from booklog where ISBN13 = ?', id, function (error, results) { // booklogテーブルから指定のカラムを取得する
     if (error) throw error; // エラー処理
     res.send(results);
   });
