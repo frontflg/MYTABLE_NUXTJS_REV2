@@ -40,6 +40,31 @@
         </v-row>
       </v-card>
     </v-dialog>
+    <!-- ダイアログ：表紙イメージ -->
+    <v-dialog
+      v-model="dialog2"
+      max-width="350"
+      persistent
+    >
+      <v-img
+        max-width="350"
+        :src="`${lists[selRow].CoverImg}`"
+      />
+      <v-row no-gutters justify="center">
+        <v-btn
+          width="175"
+          @click="updateData()"
+        >
+          編集
+        </v-btn>
+        <v-btn
+          width="175"
+          @click="dialog2 = false"
+        >
+          閉じる
+        </v-btn>
+      </v-row>
+    </v-dialog>
     <v-row>
       <v-col>
         <v-card-title>
@@ -76,21 +101,13 @@
       :items="lists"
       :search="search"
       item-key="line"
+      @click:row="rowClick"
     >
-      <!-- template #data-table-select="{ item }">
-        <v-simple-checkbox
-          v-model="item.check"
-          color="primary"
-          :value="isSelected"
-          @change="onInputCheck(isSelected)"
-        />
-      </template -->
-      <!-- /web/book?id=9784103090519 -->
-      <template #[`item.ISBN13`]="{ item }">
+      <!-- template #[`item.ISBN13`]="{ item }">
         <a :href="`http://localhost:3000/book?id=${item.ISBN13}`">
           {{ item.ISBN13 }}
         </a>
-      </template>
+      </template -->
       <template #[`item.Purchase`]="{ item }">
         <div align="right">
           {{ item.Purchase }}
@@ -117,7 +134,9 @@ export default {
     return {
       search: '',
       dialog: false,
+      dialog2: false,
       inIsbn13: '',
+      selRow: 0,
       headers: [
         {
           text: 'ISBN13',
@@ -193,6 +212,14 @@ export default {
         window.alert(e)
         return e
       }
+    },
+    rowClick (row) {
+      this.inIsbn13 = row.ISBN13
+      this.selRow = this.lists.indexOf(row)
+      this.dialog2 = true
+    },
+    updateData () {
+      window.location.href = 'http://localhost:3000/book?id=' + this.inIsbn13
     }
   }
 }
