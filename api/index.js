@@ -52,7 +52,7 @@ app.get('/search', function (req, res) { // app.get...(expressの構文)、req=r
 
 app.get('/booklog', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog', function (error, results) { // booklogテーブルから全てのカラムを取得する
+  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog order by GetDate desc', function (error, results) { // booklogテーブルから全てのカラムを取得する
     if (error) throw error; // エラー処理
     res.send(results);
   });
