@@ -260,7 +260,7 @@
             <v-img
               max-height="550"
               max-width="350"
-              :src="`${book[0].CoverImg}`"
+              :src="imgUrl"
             />
           </v-col>
         </v-row>
@@ -340,7 +340,8 @@ export default {
       inOverview: '',
       inImpressions: '',
       inState: '',
-      inCoverImg: ''
+      inCoverImg: '',
+      imgUrl: ''
     }
   },
   created () {
@@ -397,6 +398,7 @@ export default {
         this.inImpressions = this.book[0].Impressions
         this.inState = this.book[0].State
         this.inCoverImg = this.book[0].CoverImg
+        this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
@@ -442,6 +444,7 @@ export default {
           }
         )
         window.alert('更新処理を実行しました。')
+        this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         if (e.response) {
