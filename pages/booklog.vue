@@ -48,7 +48,7 @@
     >
       <v-img
         max-width="350"
-        :src="`${lists[selRow].CoverImg}`"
+        :src="imgUrl"
       />
       <v-row no-gutters justify="center">
         <v-btn
@@ -170,7 +170,8 @@ export default {
           width: '125'
         }
       ],
-      lists: []
+      lists: [],
+      imgUrl: ''
     }
   },
   methods: {
@@ -215,6 +216,7 @@ export default {
     },
     rowClick (row) {
       this.inIsbn13 = row.ISBN13
+      this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + row.CoverImg
       this.selRow = this.lists.indexOf(row)
       this.dialog2 = true
     },
