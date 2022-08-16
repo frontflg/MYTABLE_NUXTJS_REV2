@@ -1,5 +1,71 @@
 <template>
   <dev>
+    <!-- ダイアログ -->
+    <v-dialog
+      v-model="dialog"
+      max-width="750"
+      persistent
+    >
+      <v-card>
+        <v-row no-gutters justify="center">
+          <v-card-text>
+            <v-data-table
+              :headers="rowHeaders"
+              :items="rowItems"
+              item-key="name"
+              :loading="isLoaging"
+              disable-pagination
+              hide-default-footer
+              fixed-header
+              height="600"
+            >
+              <template #[`item.value`]="{ item }">
+                <v-text-field
+                  v-model="item.value"
+                  solo
+                  flat
+                  hide-details
+                />
+              </template>
+            </v-data-table>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              class="success"
+              :disabled="!isIns"
+              @click="inserData()"
+            >
+              登録
+            </v-btn>
+            &nbsp;&nbsp;
+            <v-btn
+              class="warning"
+              :disabled="isIns"
+              @click="updateData()"
+            >
+              更新
+            </v-btn>
+            &nbsp;&nbsp;
+            <v-btn
+              class="error"
+              :disabled="isIns"
+              @click="deleteData()"
+            >
+              削除
+            </v-btn>
+            &nbsp;&nbsp;
+            <v-btn
+              class="primary"
+              @click="dialog = false"
+            >
+              キャンセル
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-row>
+      </v-card>
+    </v-dialog>
     <v-row>
       <v-col>
         <v-card-title>
@@ -28,6 +94,13 @@
           </VueJsonToCsv>
             &nbsp;&nbsp;
           <v-btn
+            class="success"
+            @click="insClick()"
+          >
+            新規
+          </v-btn>
+            &nbsp;&nbsp;
+          <v-btn
             class="info"
             @click="home()"
           >
@@ -41,6 +114,7 @@
       :items="lists"
       :search="search"
       item-key="line"
+      @click:row="rowClick"
     />
   </dev>
 </template>
@@ -51,9 +125,22 @@ export default {
   data () {
     return {
       tblId: this.$route.query.tbl,
+      dialog: false,
+      isIns: false,
       search: '',
       headers: [],
       lists: [],
+      rowHeaders: [
+        {
+          text: '項目名',
+          value: 'name'
+        },
+        {
+          text: '値',
+          value: 'value'
+        }
+      ],
+      rowItems: [],
       json_meta: [
         [{
           key: 'charset',
@@ -108,6 +195,38 @@ export default {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
       }
+    },
+    rowClick (row) {
+      let i = 0
+      this.rowItems.splice(0)
+      for (const item in row) {
+        const addData = { name: this.headers[i].value, value: row[item] }
+        this.rowItems.push(addData)
+        i++
+      }
+      this.dialog = true
+      this.isIns = false
+    },
+    insClick () {
+      this.rowItems.splice(0)
+      for (let i = 0; i < this.headers.length; i++) {
+        const addData = { name: this.headers[i].value, value: '' }
+        this.rowItems.push(addData)
+      }
+      this.dialog = true
+      this.isIns = true
+    },
+    insertData () {
+      window.alert('登録機能は未実装です！')
+    },
+    updateData () {
+      window.alert('更新機能は未実装です！')
+    },
+    deleteData () {
+      window.alert('削除機能は未実装です！')
+    },
+    close () {
+      console.log('Dialog closed') // eslint-disable-line no-console
     },
     home () {
       this.$router.push('/tableList')
