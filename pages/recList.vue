@@ -13,7 +13,6 @@
               :headers="rowHeaders"
               :items="rowItems"
               item-key="name"
-              :loading="isLoaging"
               disable-pagination
               hide-default-footer
               fixed-header
