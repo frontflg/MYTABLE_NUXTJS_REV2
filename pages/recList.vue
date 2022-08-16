@@ -33,7 +33,7 @@
             <v-btn
               class="success"
               :disabled="!isIns"
-              @click="inserData()"
+              @click="insertData()"
             >
               登録
             </v-btn>
