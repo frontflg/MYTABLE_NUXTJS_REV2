@@ -6,8 +6,8 @@ app.use(bodyParser.json());
 
 const oracledb = require('oracledb');          // 今回はoracleを利用する
 const connection = oracledb.createConnection({ // 以下、各自のoracledbへの接続情報を書く
-  user     : 'TESTUSER',
-  password : 'pass123',
+  user     : '(OracleのユーザーID)',
+  password : '(ユーザーのパスワード)',
   connectString: 'localhost:1521/orcl'
 });
 
