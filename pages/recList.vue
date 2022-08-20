@@ -218,8 +218,18 @@ export default {
     insertData () {
       window.alert('登録機能は未実装です！')
     },
-    updateData () {
-      window.alert('更新機能は未実装です！')
+    async updateData () {
+      const answer = window.confirm('更新してもいいですか？')
+      if (answer) {
+        try {
+          await this.$axios.$post('/update?id=' + this.inTblId, this.rowItems)
+          window.alert('更新処理を実行しました。')
+        } catch (e) {
+          console.log(e.errorCode) // eslint-disable-line no-console
+          window.alert(e)
+        }
+      }
+      this.dialog = false
     },
     deleteData () {
       window.alert('削除機能は未実装です！')
