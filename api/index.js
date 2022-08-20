@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-const mysql = require('mysql');              // 今回はMySQLを利用する
+const mysql = require('mysql'); // MySQLを利用する
 const connection = mysql.createConnection({  // 以下、各自のMySQLへの接続情報を書く
   host     : 'localhost',
   user     : '(ユーザＩＤ)',
@@ -94,20 +94,8 @@ app.get('/bookdelete', function (req, res) { // app.get...(expressの構文)、r
   });
 });
 
-app.post('/update', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
-  const id = req.query.id;
-  const name = req.body[0].name;
-  const val  = req.body[0].value;
-  console.log('UPDATE ' + id + ' ' + name + ' ' + val);
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('call tblUpdate(?, ?)', id, req.body, function (error, results) {
-    if (error) {
-      throw error; // エラー処理
-    } else {
-      res.status(200).send();
-    }
-  });
-});
+const sub = require('./sub');
+app.post('/update', sub.update);
 
 app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
   const isbn13 = req.body.ISBN13;
