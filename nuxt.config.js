@@ -54,6 +54,7 @@ export default {
 
   proxy: {
     "/update": "http://localhost:5000/",
+    "/delete": "http://localhost:5000/",
     "/bookupdate": "http://localhost:5000/",
     "/api": "http://localhost:5000",
     "/web": "http://localhost:3000"
