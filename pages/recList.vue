@@ -215,8 +215,19 @@ export default {
       this.dialog = true
       this.isIns = true
     },
-    insertData () {
-      window.alert('登録機能は未実装です！')
+    async insertData () {
+      const answer = window.confirm('登録してもいいですか？')
+      if (answer) {
+        try {
+          await this.$axios.$post('/update?id=' + this.inTblId, this.rowItems)
+          window.alert('登録処理を実行しました。')
+        } catch (e) {
+          console.log(e.errorCode) // eslint-disable-line no-console
+          window.alert(e)
+        }
+      }
+      this.dialog = false
+      this.searchDate()
     },
     async updateData () {
       const answer = window.confirm('更新してもいいですか？')
@@ -230,9 +241,21 @@ export default {
         }
       }
       this.dialog = false
+      this.searchDate()
     },
-    deleteData () {
-      window.alert('削除機能は未実装です！')
+    async deleteData () {
+      const answer = window.confirm('削除してもいいですか？')
+      if (answer) {
+        try {
+          await this.$axios.$post('/delete?id=' + this.inTblId, this.rowItems)
+          window.alert('削除を実行しました。')
+        } catch (e) {
+          console.log(e.errorCode) // eslint-disable-line no-console
+          window.alert(e)
+        }
+      }
+      this.dialog = false
+      this.searchDate()
     },
     close () {
       console.log('Dialog closed') // eslint-disable-line no-console
