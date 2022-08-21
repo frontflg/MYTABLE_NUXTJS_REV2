@@ -96,6 +96,7 @@ app.get('/bookdelete', function (req, res) { // app.get...(expressの構文)、r
 
 const sub = require('./sub');
 app.post('/update', sub.update);
+app.post('/delete', sub.delete);
 
 app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
   const isbn13 = req.body.ISBN13;
