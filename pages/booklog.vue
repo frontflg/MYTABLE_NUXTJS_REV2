@@ -123,8 +123,7 @@ export default {
   name: 'BooklogList',
   async asyncData ({ $axios }) {
     try {
-      // const lists = await $axios.$get('http://localhost:5000/booklog')
-      const lists = await $axios.$get('http://localhost:3000/api/booklog')
+      const lists = await $axios.$get('/api/booklog')
       return { lists }
     } catch (e) {
       console.log(e.errorCode) // eslint-disable-line no-console
@@ -204,8 +203,7 @@ export default {
       }
       this.dialog = false
       try {
-        // await this.$axios.$get('http://localhost:5000/bookinsert', {
-        await this.$axios.$get('http://localhost:3000/api/bookinsert', {
+        await this.$axios.$get('/api/bookinsert', {
           params: {
             id: this.inIsbn13
           }
