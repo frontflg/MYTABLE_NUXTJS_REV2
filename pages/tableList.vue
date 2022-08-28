@@ -49,8 +49,7 @@ export default {
   name: 'TableList',
   async asyncData ({ $axios }) {
     try {
-      // const lists = await $axios.$get('http://localhost:5000')
-      const lists = await $axios.$get('http://localhost:3000/api')
+      const lists = await $axios.$get('/api')
       return { lists }
     } catch (e) {
       console.log(e.errorCode) // eslint-disable-line no-console
