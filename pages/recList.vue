@@ -98,7 +98,10 @@
           >
             新規
           </v-btn>
-            &nbsp;&nbsp;
+        </v-card-actions>
+      </v-col>
+      <v-col>
+        <v-card-actions class="justify-end">
           <v-btn
             class="info"
             @click="home()"
@@ -160,7 +163,8 @@ export default {
         return
       }
       try {
-        const res = await this.$axios.$get('http://localhost:5000/recList', {
+        // const res = await this.$axios.$get('http://localhost:5000/recList', {
+        const res = await this.$axios.$get('http://localhost:3000/api/recList', {
           params: {
             tbl: this.inTblId
           }
@@ -171,7 +175,8 @@ export default {
         window.alert(e)
       }
       try {
-        const res = await this.$axios.$get('http://localhost:5000/search', {
+        // const res = await this.$axios.$get('http://localhost:5000/search', {
+        const res = await this.$axios.$get('http://localhost:3000/api/search', {
           params: {
             tbl: this.inTblId
           }
@@ -272,13 +277,13 @@ export default {
   background: #8C9EFF;
 }
 .v-data-table td {
-  background: #e0e0e0;
-  border: 1px #c0c0c0 solid;
+  background: #E8F5E9;
+  border: 1px #BDBDBD solid;
 }
 .v-data-table tr:nth-child(odd) td {
-  background: #f5f5f5;
+  background: #F5F5F5;
 }
 .v-data-table tr:hover td {
-  background-color: #fcffa4;
+  background-color: #FFFF8D;
 }
 </style>
