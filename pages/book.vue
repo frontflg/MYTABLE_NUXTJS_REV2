@@ -279,6 +279,10 @@
               >
                 削除
               </v-btn>
+            </v-card-actions>
+          </v-col>
+          <v-col>
+            <v-card-actions class="justify-end">
               <v-btn
                 class="info"
                 @click="home()"
