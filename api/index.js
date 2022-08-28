@@ -144,6 +144,8 @@ app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)�
   });
 });
 
-app.listen(5000, function () { // port 5000をlistenする
-  console.log('Example app listening on port 5000!'); // console.logによりファイル実行時にコンソールに文字表示させる
-});
+// serverMiddleware導入で変更
+// app.listen(5000, function () { // port 5000をlistenする
+//   console.log('Example app listening on port 5000!'); // console.logによりファイル実行時にコンソールに文字表示させる
+// });
+export default app;
