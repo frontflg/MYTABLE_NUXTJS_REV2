@@ -52,11 +52,17 @@ export default {
     proxy: true
   },
 
+  serverMiddleware: [
+  // /api/* を処理するために、プロジェクトの api ディレクトリからファイルを登録します
+    { path: '/api', handler: '~/api/index.js' }
+  ],
+
+  // serverMiddleware導入で変更(5000 --> 3000/api)
   proxy: {
-    "/update": "http://localhost:5000/",
-    "/delete": "http://localhost:5000/",
-    "/bookupdate": "http://localhost:5000/",
-    "/api": "http://localhost:5000",
+    "/update": "http://localhost:3000/api/",
+    "/delete": "http://localhost:3000/api/",
+    "/bookupdate": "http://localhost:3000/api/",
+    "/api": "http://localhost:3000/api",
     "/web": "http://localhost:3000"
   },
 
