@@ -163,8 +163,7 @@ export default {
         return
       }
       try {
-        // const res = await this.$axios.$get('http://localhost:5000/recList', {
-        const res = await this.$axios.$get('http://localhost:3000/api/recList', {
+        const res = await this.$axios.$get('/api/recList', {
           params: {
             tbl: this.inTblId
           }
@@ -175,8 +174,7 @@ export default {
         window.alert(e)
       }
       try {
-        // const res = await this.$axios.$get('http://localhost:5000/search', {
-        const res = await this.$axios.$get('http://localhost:3000/api/search', {
+        const res = await this.$axios.$get('/api/search', {
           params: {
             tbl: this.inTblId
           }
