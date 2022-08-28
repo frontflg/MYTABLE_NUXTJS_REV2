@@ -358,7 +358,8 @@ export default {
         return
       }
       try {
-        const res = await this.$axios.$get('http://localhost:5000/booksearch', {
+        // const res = await this.$axios.$get('http://localhost:5000/booksearch', {
+        const res = await this.$axios.$get('http://localhost:3000/api/booksearch', {
           params: {
             id: this.inIsbn13
           }
@@ -475,7 +476,8 @@ export default {
       const answer = window.confirm('削除してもいいですか？')
       if (answer) {
         try {
-          await this.$axios.$get('http://localhost:5000/bookdelete', {
+          // await this.$axios.$get('http://localhost:5000/bookdelete', {
+          await this.$axios.$get('http://localhost:3000/api/bookdelete', {
             params: {
               id: this.inIsbn13
             }
