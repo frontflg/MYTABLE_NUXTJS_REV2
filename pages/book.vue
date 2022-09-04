@@ -349,10 +349,10 @@ export default {
     }
   },
   created () {
-    this.searchDate()
+    this.searchData()
   },
   methods: {
-    async searchDate () {
+    async searchData () {
       if (!this.inIsbn13) {
         window.alert('検索キーが未設定です！' + this.inIsbn13)
         return
