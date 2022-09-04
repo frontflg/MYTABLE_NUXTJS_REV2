@@ -23,7 +23,8 @@ app.get('/', function (req, res) { // app.get...(expressの構文)、req=request
 app.get('/recList', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
   const tbl = req.query.tbl;
   console.log('TABLE ' + tbl);
-  const sql = 'SELECT C.COLUMN_COMMENT AS text,C.COLUMN_NAME AS value,' +
+  const sql = 'SELECT CASE WHEN C.COLUMN_COMMENT = null OR C.COLUMN_COMMENT = "" ' +
+              ' THEN C.COLUMN_NAME ELSE C.COLUMN_COMMENT END  text,C.COLUMN_NAME AS value,' +
               ' CASE WHEN C.DATA_TYPE = "date" THEN 110 ' +
               ' WHEN C.DATA_TYPE LIKE "%int%" THEN C.NUMERIC_PRECISION * 4 + 50' +
               ' WHEN C.CHARACTER_MAXIMUM_LENGTH IS NULL THEN 100' +
