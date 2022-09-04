@@ -154,10 +154,30 @@ export default {
     }
   },
   created () {
-    this.searchDate()
+    this.headerData()
+    this.searchData()
   },
   methods: {
-    async searchDate () {
+    async headerData () {
+      if (!this.inTblId) {
+        window.alert('検索キーが未設定です！')
+        return
+      }
+      try {
+        // const res = await this.$axios.$get('http://localhost:5000/recList', {
+        // const res = await this.$axios.$get('http://localhost:3000/api/recList', {
+        const res = await this.$axios.$get('/api/recList', {
+          params: {
+            tbl: this.inTblId
+          }
+        })
+        this.headers = res
+      } catch (e) {
+        console.log(e.errorCode) // eslint-disable-line no-console
+        window.alert(e)
+      }
+    },
+    async searchData () {
       if (!this.inTblId) {
         window.alert('検索キーが未設定です！')
         return
@@ -230,7 +250,7 @@ export default {
         }
       }
       this.dialog = false
-      this.searchDate()
+      this.searchData()
     },
     async updateData () {
       const answer = window.confirm('更新してもいいですか？')
@@ -244,7 +264,7 @@ export default {
         }
       }
       this.dialog = false
-      this.searchDate()
+      this.searchData()
     },
     async deleteData () {
       const answer = window.confirm('削除してもいいですか？')
@@ -258,7 +278,7 @@ export default {
         }
       }
       this.dialog = false
-      this.searchDate()
+      this.searchData()
     },
     close () {
       console.log('Dialog closed') // eslint-disable-line no-console
