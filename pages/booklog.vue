@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     downloadData () {
-      let csv = 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
+      let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
       this.lists.forEach(function (el) {
         csv += el.ISBN13 + ',' + el.BookName + ',' + el.Author + ',' +
         el.Publisher + ',' + el.Purchase + ',' +
