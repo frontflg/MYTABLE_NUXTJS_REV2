@@ -154,8 +154,10 @@ export default {
     }
   },
   created () {
-    this.headerData()
-    this.searchData()
+    if (typeof window !== 'undefined') {
+      this.headerData()
+      this.searchData()
+    }
   },
   methods: {
     async headerData () {
