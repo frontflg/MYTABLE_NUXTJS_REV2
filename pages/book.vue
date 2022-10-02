@@ -349,7 +349,9 @@ export default {
     }
   },
   created () {
-    this.searchData()
+    if (typeof window !== 'undefined') {
+      this.searchData()
+    }
   },
   methods: {
     async searchData () {
