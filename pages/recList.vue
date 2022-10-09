@@ -243,25 +243,30 @@ export default {
     inputCheck () {
       for (let i = 0; i < this.headers.length; i++) {
         const str = this.rowItems[i].value
+        const type = this.headers[i].datatype
         if (str) {
-          if (this.headers[i].datatype === 'varchar') {
-            if (this.rowItems[i].value.length > this.headers[i].dataleng) {
+          if (type === 'varchar') {
+            if (str.length > this.headers[i].dataleng) {
               window.alert(this.rowItems[i].name + 'は、[' + this.headers[i].dataleng + ']文字以内で入力してください。')
               return false
             }
-          } else if (this.headers[i].datatype === 'tinyint' || this.headers[i].datatype === 'int') {
+          } else if (['int', 'tinyint'].includes(type)) {
             if (isNaN(str)) {
               window.alert(this.rowItems[i].name + 'が数値ではありません。')
               return false
             }
-          } else if (this.headers[i].datatype === 'date') {
+          } else if (type === 'date') {
             if (!str.match(/\d{4}-\d{1,2}-\d{1,2}/)) {
               window.alert(this.rowItems[i].name + 'が日付形式[yyyy-mm-dd]ではありません。')
               return false
             }
           } else {
-            window.alert(i + ' ' + this.headers[i].datatype + 'は、チェック未実装')
+            // 以下のアラームが出たらチェックを検討する
+            window.alert(i + ' ' + type + 'は、チェック未実装')
           }
+        } else if (this.headers[i].nullabl === 'NO') {
+          window.alert(this.rowItems[i].name + 'は必須入力項目です。')
+          return false
         }
       }
       return true
