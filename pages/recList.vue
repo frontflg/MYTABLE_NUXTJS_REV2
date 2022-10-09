@@ -240,7 +240,36 @@ export default {
       this.dialog = true
       this.isIns = true
     },
+    inputCheck () {
+      for (let i = 0; i < this.headers.length; i++) {
+        const str = this.rowItems[i].value
+        if (str) {
+          if (this.headers[i].datatype === 'varchar') {
+            if (this.rowItems[i].value.length > this.headers[i].dataleng) {
+              window.alert(this.rowItems[i].name + 'は、[' + this.headers[i].dataleng + ']文字以内で入力してください。')
+              return false
+            }
+          } else if (this.headers[i].datatype === 'tinyint' || this.headers[i].datatype === 'int') {
+            if (isNaN(str)) {
+              window.alert(this.rowItems[i].name + 'が数値ではありません。')
+              return false
+            }
+          } else if (this.headers[i].datatype === 'date') {
+            if (!str.match(/\d{4}-\d{1,2}-\d{1,2}/)) {
+              window.alert(this.rowItems[i].name + 'が日付形式[yyyy-mm-dd]ではありません。')
+              return false
+            }
+          } else {
+            window.alert(i + ' ' + this.headers[i].datatype + 'は、チェック未実装')
+          }
+        }
+      }
+      return true
+    },
     async insertData () {
+      if (!this.inputCheck()) {
+        return
+      }
       const answer = window.confirm('登録してもいいですか？')
       if (answer) {
         try {
@@ -255,6 +284,9 @@ export default {
       this.searchData()
     },
     async updateData () {
+      if (!this.inputCheck()) {
+        return
+      }
       const answer = window.confirm('更新してもいいですか？')
       if (answer) {
         try {
