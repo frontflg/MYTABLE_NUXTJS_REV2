@@ -31,6 +31,7 @@ app.get('/recList', function (req, res) { // app.get...(expressの構文)、req=
               ' WHEN C.CHARACTER_MAXIMUM_LENGTH > 100 THEN 500' +
               ' WHEN C.CHARACTER_MAXIMUM_LENGTH < 13 THEN 100' +
               ' ELSE C.CHARACTER_MAXIMUM_LENGTH * 5 + 40 END AS width' +
+              ' ,C.DATA_TYPE as datatype,C.CHARACTER_MAXIMUM_LENGTH as dataleng' +
               ' FROM information_schema.COLUMNS C' +
               ' WHERE C.TABLE_NAME = ? ORDER BY C.ORDINAL_POSITION';
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
