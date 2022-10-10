@@ -34,6 +34,7 @@ app.get('/recList', function (req, res) { // app.get...(expressの構文)、req=
               ' ,C.DATA_TYPE as datatype,C.CHARACTER_MAXIMUM_LENGTH as dataleng' +
               ' FROM information_schema.COLUMNS C' +
               ' WHERE C.TABLE_NAME = ? ORDER BY C.ORDINAL_POSITION';
+              // 数値の桁数は、C.COLUMN_TYPE の()の中の数字で確認できるが、今回そこまではしない
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
   connection.query(sql, tbl, function (error, results) { // テーブルカラムを取得する
     if (error) throw error; // エラー処理
