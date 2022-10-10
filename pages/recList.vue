@@ -256,6 +256,11 @@ export default {
               return false
             }
             // 数値の桁数は、COLUMN_TYPE の()の中の数字で確認できるが、数字部分取得が複雑になるので、今回そこまではしない
+            // 例えば以下かと（小数点以下ありの場合が未対応で不完全）
+            // if (str.length > this.headers[i].coltype.replace(/[^0-9]/g,'')) {
+            //   window.alert(this.rowItems[i].name + 'が桁数オーバーしています。')
+            //   return false
+            // }
           } else if (type === 'date') {
             if (!str.match(/\d{4}-\d{1,2}-\d{1,2}/)) {
               window.alert(this.rowItems[i].name + 'が日付形式[yyyy-mm-dd]ではありません。')
