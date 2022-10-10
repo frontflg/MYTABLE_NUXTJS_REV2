@@ -255,13 +255,14 @@ export default {
               window.alert(this.rowItems[i].name + 'が数値ではありません。')
               return false
             }
+            // 数値の桁数は、COLUMN_TYPE の()の中の数字で確認できるが、数字部分取得が複雑になるので、今回そこまではしない
           } else if (type === 'date') {
             if (!str.match(/\d{4}-\d{1,2}-\d{1,2}/)) {
               window.alert(this.rowItems[i].name + 'が日付形式[yyyy-mm-dd]ではありません。')
               return false
             }
           } else {
-            // 以下のアラームが出たらチェックを検討する
+            // 以下のアラームが出たらデータ型のチェックの追加を検討する
             window.alert(i + ' ' + type + 'は、チェック未実装')
           }
         } else if (this.headers[i].nullabl === 'NO') {
