@@ -467,7 +467,7 @@ export default {
     },
     deleteItem () {
       this.deleteBook()
-      window.location.href = 'http://localhost:3000/booklog'
+      this.home()
     },
     async deleteBook () {
       if (!this.inIsbn13) {
