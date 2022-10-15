@@ -153,47 +153,20 @@ export default {
       csvFile: this.$route.query.tbl + '_' + new Date().toISOString().substr(0, 10)
     }
   },
+  async fetch () {
+    const url = 'http://localhost:3000/api/recList?tbl=' + this.inTblId
+    this.headers = await fetch(url).then(res => res.json())
+  },
   created () {
     if (typeof window !== 'undefined') {
-      this.headerData()
       this.searchData()
     }
   },
   methods: {
-    async headerData () {
-      if (!this.inTblId) {
-        window.alert('検索キーが未設定です！')
-        return
-      }
-      try {
-        // const res = await this.$axios.$get('http://localhost:5000/recList', {
-        // const res = await this.$axios.$get('http://localhost:3000/api/recList', {
-        const res = await this.$axios.$get('/api/recList', {
-          params: {
-            tbl: this.inTblId
-          }
-        })
-        this.headers = res
-      } catch (e) {
-        console.log(e.errorCode) // eslint-disable-line no-console
-        window.alert(e)
-      }
-    },
     async searchData () {
       if (!this.inTblId) {
         window.alert('検索キーが未設定です！')
         return
-      }
-      try {
-        const res = await this.$axios.$get('/api/recList', {
-          params: {
-            tbl: this.inTblId
-          }
-        })
-        this.headers = res
-      } catch (e) {
-        console.log(e.errorCode) // eslint-disable-line no-console
-        window.alert(e)
       }
       try {
         const res = await this.$axios.$get('/api/search', {
