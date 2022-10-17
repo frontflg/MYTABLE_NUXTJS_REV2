@@ -405,6 +405,7 @@ export default {
         this.inState = this.book[0].State
         this.inCoverImg = this.book[0].CoverImg
         this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
+        // this.imgUrl = 'https://cover.openbd.jp//' + this.inIsbn13 + '.jpg'
         // 新規登録の時　googleapi　から書籍情報を取得
         if (this.inBookName === '書名') {
           try {
