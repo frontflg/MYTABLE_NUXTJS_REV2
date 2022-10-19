@@ -404,29 +404,36 @@ export default {
         this.inImpressions = this.book[0].Impressions
         this.inState = this.book[0].State
         this.inCoverImg = this.book[0].CoverImg
-        this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
-        // this.imgUrl = 'https://cover.openbd.jp//' + this.inIsbn13 + '.jpg'
-        // 新規登録の時　googleapi　から書籍情報を取得
+        if (this.inCoverImg === null) {
+          this.imgUrl = 'https://cover.openbd.jp//' + this.inIsbn13 + '.jpg'
+        } else {
+          this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
+        }
+        // :src="`${book[0].CoverImg}`"
         if (this.inBookName === '書名') {
           try {
-            const res2 = await this.$axios.$get('https://www.googleapis.com/books/v1/volumes', {
+            const res = await this.$axios.$get('https://www.googleapis.com/books/v1/volumes', {
               params: {
                 q: this.inIsbn13
               }
             })
-            this.inBookName = JSON.stringify(res2.items[0].volumeInfo.title).replace(/"/g, '')
-            this.inIsbn10 = JSON.stringify(res2.items[0].volumeInfo.industryIdentifiers[0].identifier).replace(/"/g, '')
+            this.inBookName = JSON.stringify(res.items[0].volumeInfo.title).replace(/"/g, '')
+            this.inIsbn10 = JSON.stringify(res.items[0].volumeInfo.industryIdentifiers[0].identifier).replace(/"/g, '')
             if (this.inIsbn10.length > 10) {
-              this.inIsbn10 = JSON.stringify(res2.items[0].volumeInfo.industryIdentifiers[1].identifier).replace(/"/g, '')
+              this.inIsbn10 = JSON.stringify(res.items[0].volumeInfo.industryIdentifiers[1].identifier).replace(/"/g, '')
             }
-            this.inAuthor = JSON.stringify(res2.items[0].volumeInfo.authors[0]).replace(/"/g, '')
-            this.inPublisher = JSON.stringify(res2.items[0].volumeInfo.publisher).replace(/"/g, '')
-            this.inOverview = JSON.stringify(res2.items[0].volumeInfo.subtitle).replace(/"/g, '')
-            if (JSON.stringify(res2.items[0].volumeInfo.publishedDate)) {
-              this.inIssueDate = JSON.stringify(res2.items[0].volumeInfo.publishedDate).replace(/"/g, '')
+            this.inAuthor = JSON.stringify(res.items[0].volumeInfo.authors[0]).replace(/"/g, '')
+            if ('subtitle' in res.items[0].volumeInfo) {
+              this.inOverview = JSON.stringify(res.items[0].volumeInfo.subtitle).replace(/"/g, '')
+            }
+            if ('publishedDate' in res.items[0].volumeInfo) {
+              this.inIssueDate = JSON.stringify(res.items[0].volumeInfo.publishedDate).replace(/"/g, '')
+            }
+            if ('publisher' in res.items[0].volumeInfo) {
+              this.inPublisher = JSON.stringify(res.items[0].volumeInfo.publisher).replace(/"/g, '')
             }
           } catch (e) {
-            window.alert('e.errorCode:' + e + JSON.stringify(res))
+            // window.alert('e.errorCode:' + e + JSON.stringify(res))
             console.log(e.errorCode) // eslint-disable-line no-console
           }
         }
