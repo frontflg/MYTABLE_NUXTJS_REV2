@@ -6,10 +6,10 @@ app.use(bodyParser.json());
 
 const mysql = require('mysql');     // MySQLを利用する
 const connection = mysql.createConnection({ // 以下、各自のMySQLへの接続情報を書く
-  host     : 'localhost',   // '127.0.0.1',
-  user     : 'Tetsuhiro',   // 'root',
-  password : 'TetsuhiroPW', // 'password', port : 3306,
-  database : 'testdb'       // 'test'
+  host     : 'localhost',
+  user     : '(ユーザＩＤ)',
+  password : '(パスワード)',
+  database : '(データベース名)'
 });
 
 app.get('/', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
