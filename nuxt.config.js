@@ -25,7 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-      { src: '@/plugins/vue-json-to-csv.js' }
+      { src: '@/plugins/vue-json-to-csv.js' },
+      { src: '@/plugins/day.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -53,11 +54,14 @@ export default {
   },
 
   serverMiddleware: [
-  // /api/* ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã«ã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã® api ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç™»éŒ²ã—ã¾ã™
+  // /api/* ‚ðˆ—‚·‚é‚½‚ß‚ÉAƒvƒƒWƒFƒNƒg‚Ì api ƒfƒBƒŒƒNƒgƒŠ‚©‚çƒtƒ@ƒCƒ‹‚ð“o˜^‚µ‚Ü‚·
     { path: '/api', handler: '~/api/index.js' }
   ],
 
-  // serverMiddlewareå°Žå…¥ã§å¤‰æ›´(5000 --> 3000/api)
+   // "/update": "http://localhost:5000/",
+   // "/delete": "http://localhost:5000/",
+   // "/bookupdate": "http://localhost:5000/",
+   // "/api": "http://localhost:5000/",
   proxy: {
     "/update": "http://localhost:3000/api/",
     "/delete": "http://localhost:3000/api/",
