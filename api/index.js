@@ -13,105 +13,17 @@ const connection = mysql.createConnection({ // 以下、各自のMySQLへの接�
 });
 
 app.get('/', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
+  const sql = req.query.sql;
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('SELECT TABLE_NAME,TABLE_COMMENT,TABLE_ROWS,CREATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "testdb"', function (error, results) {
+  connection.query(sql, function (error, results) {
     if (error) throw error; // エラー処理
     res.send(results);
-  });
-});
-
-app.get('/recList', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  const tbl = req.query.tbl;
-  console.log('TABLE ' + tbl);
-  const sql = 'SELECT CASE WHEN C.COLUMN_COMMENT = null OR C.COLUMN_COMMENT = "" ' +
-              ' THEN C.COLUMN_NAME ELSE C.COLUMN_COMMENT END AS text,C.COLUMN_NAME AS value,' +
-              ' CASE WHEN C.DATA_TYPE = "date" THEN 110 ' +
-              ' WHEN C.DATA_TYPE LIKE "%int%" THEN C.NUMERIC_PRECISION * 4 + 50' +
-              ' WHEN C.CHARACTER_MAXIMUM_LENGTH IS NULL THEN 100' +
-              ' WHEN C.CHARACTER_MAXIMUM_LENGTH > 90 THEN 500' +
-              ' WHEN C.CHARACTER_MAXIMUM_LENGTH < 13 THEN 100' +
-              ' ELSE C.CHARACTER_MAXIMUM_LENGTH * 5 + 40 END AS width' +
-              ' ,C.DATA_TYPE as datatype,C.CHARACTER_MAXIMUM_LENGTH as dataleng,C.IS_NULLABLE as nullabl' +
-              ' FROM information_schema.COLUMNS C' +
-              ' WHERE C.TABLE_NAME = ? ORDER BY C.ORDINAL_POSITION';
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query(sql, tbl, function (error, results) { // テーブルカラムを取得する
-    if (error) throw error; // エラー処理
-    res.send(results);
-  });
-});
-
-app.get('/search', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  const tbl = req.query.tbl;
-  console.log('TABLE ' + tbl);
-  const sql = 'SELECT * FROM ' + tbl;
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query(sql, function (error, results, fields) { // テーブルカラム、フィールドの詳細を取得する
-    if (error) throw error; // エラー処理
-    res.send(results);
-  });
-});
-
-app.get('/booklog', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog order by GetDate desc', function (error, results) { // booklogテーブルから全てのカラムを取得する
-    if (error) throw error; // エラー処理
-    res.send(results);
-  });
-});
-
-app.get('/booksearch', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  const id = req.query.id;
-  console.log('SEARCH ' + id);
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('select *,DATE_FORMAT(IssueDate,"%Y-%m-%d") AS IDATE,DATE_FORMAT(GetDate,"%Y-%m-%d") AS GDATE,DATE_FORMAT(ReadDate,"%Y-%m-%d") AS RDATE from booklog where ISBN13 = ?', id, function (error, results) { // booklogテーブルから指定のカラムを取得する
-    if (error) throw error; // エラー処理
-    res.send(results);
-  });
-});
-
-app.get('/bookinsert', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  const id = req.query.id;
-  console.log('INSERT ' + id);
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('insert into booklog (ISBN13,BookName) values (?,"書名")', id, function (error, results) { // booklogテーブルから指定の行を追加する
-    if (error) {
-      throw error; // エラー処理
-    } else {
-      res.status(200).send();
-    }
-  });
-});
-
-app.get('/bookdelete', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
-  const id = req.query.id;
-  console.log('DELETE ' + id);
-  res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('delete from booklog where ISBN13 = ?', id, function (error, results) { // booklogテーブルから指定の行を削除取得する
-    if (error) {
-      throw error; // エラー処理
-    } else {
-      res.status(200).send();
-    }
   });
 });
 
 const sub = require('./sub');
+
 app.post('/update', sub.update);
-// app.post('/update', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
-//   const id = req.query.id;
-//   const name = req.body[0].name;
-//   const val  = req.body[0].value;
-//   console.log('UPDATE ' + id + ' ' + name + ' ' + val);
-//   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-//   connection.query('call tblUpdate(?, ?)', id, req.body, function (error, results) {
-//     if (error) {
-//       throw error; // エラー処理
-//     } else {
-//       res.status(200).send();
-//     }
-//   });
-// });
 
 app.post('/delete', sub.delete);
 
