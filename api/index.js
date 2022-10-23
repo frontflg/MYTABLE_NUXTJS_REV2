@@ -4,17 +4,17 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-const mysql = require('mysql'); // MySQLを利用する
-const connection = mysql.createConnection({  // 以下、各自のMySQLへの接続情報を書く
-  host     : 'localhost',
-  user     : '(ユーザＩＤ)',
-  password : '(パスワード)',
-  database : '(データベース名)'
+const mysql = require('mysql');     // MySQLを利用する
+const connection = mysql.createConnection({ // 以下、各自のMySQLへの接続情報を書く
+  host     : 'localhost',   // '127.0.0.1',
+  user     : 'Tetsuhiro',   // 'root',
+  password : 'TetsuhiroPW', // 'password', port : 3306,
+  database : 'testdb'       // 'test'
 });
 
 app.get('/', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('SELECT TABLE_NAME,TABLE_COMMENT,TABLE_ROWS,CREATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "(スキーマ名)"', function (error, results) {
+  connection.query('SELECT TABLE_NAME,TABLE_COMMENT,TABLE_ROWS,CREATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "testdb"', function (error, results) {
     if (error) throw error; // エラー処理
     res.send(results);
   });
@@ -24,17 +24,16 @@ app.get('/recList', function (req, res) { // app.get...(expressの構文)、req=
   const tbl = req.query.tbl;
   console.log('TABLE ' + tbl);
   const sql = 'SELECT CASE WHEN C.COLUMN_COMMENT = null OR C.COLUMN_COMMENT = "" ' +
-              ' THEN C.COLUMN_NAME ELSE C.COLUMN_COMMENT END  text,C.COLUMN_NAME AS value,' +
+              ' THEN C.COLUMN_NAME ELSE C.COLUMN_COMMENT END AS text,C.COLUMN_NAME AS value,' +
               ' CASE WHEN C.DATA_TYPE = "date" THEN 110 ' +
               ' WHEN C.DATA_TYPE LIKE "%int%" THEN C.NUMERIC_PRECISION * 4 + 50' +
               ' WHEN C.CHARACTER_MAXIMUM_LENGTH IS NULL THEN 100' +
-              ' WHEN C.CHARACTER_MAXIMUM_LENGTH > 100 THEN 500' +
+              ' WHEN C.CHARACTER_MAXIMUM_LENGTH > 90 THEN 500' +
               ' WHEN C.CHARACTER_MAXIMUM_LENGTH < 13 THEN 100' +
               ' ELSE C.CHARACTER_MAXIMUM_LENGTH * 5 + 40 END AS width' +
-              ' ,C.DATA_TYPE as datatype,C.CHARACTER_MAXIMUM_LENGTH as dataleng' +
+              ' ,C.DATA_TYPE as datatype,C.CHARACTER_MAXIMUM_LENGTH as dataleng,C.IS_NULLABLE as nullabl' +
               ' FROM information_schema.COLUMNS C' +
               ' WHERE C.TABLE_NAME = ? ORDER BY C.ORDINAL_POSITION';
-              // 数値の桁数は、C.COLUMN_TYPE の()の中の数字で確認できるが、今回そこまではしない
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
   connection.query(sql, tbl, function (error, results) { // テーブルカラムを取得する
     if (error) throw error; // エラー処理
@@ -47,7 +46,7 @@ app.get('/search', function (req, res) { // app.get...(expressの構文)、req=r
   console.log('TABLE ' + tbl);
   const sql = 'SELECT * FROM ' + tbl;
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query(sql, function (error, results) { // テーブルカラムを取得する
+  connection.query(sql, function (error, results, fields) { // テーブルカラム、フィールドの詳細を取得する
     if (error) throw error; // エラー処理
     res.send(results);
   });
@@ -75,7 +74,7 @@ app.get('/bookinsert', function (req, res) { // app.get...(expressの構文)、r
   const id = req.query.id;
   console.log('INSERT ' + id);
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query('insert into booklog (ISBN13,BookName) values (?,"書名")', id, function (error, results) { // booklogテーブルに行を追加する
+  connection.query('insert into booklog (ISBN13,BookName) values (?,"書名")', id, function (error, results) { // booklogテーブルから指定の行を追加する
     if (error) {
       throw error; // エラー処理
     } else {
@@ -99,6 +98,21 @@ app.get('/bookdelete', function (req, res) { // app.get...(expressの構文)、r
 
 const sub = require('./sub');
 app.post('/update', sub.update);
+// app.post('/update', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
+//   const id = req.query.id;
+//   const name = req.body[0].name;
+//   const val  = req.body[0].value;
+//   console.log('UPDATE ' + id + ' ' + name + ' ' + val);
+//   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
+//   connection.query('call tblUpdate(?, ?)', id, req.body, function (error, results) {
+//     if (error) {
+//       throw error; // エラー処理
+//     } else {
+//       res.status(200).send();
+//     }
+//   });
+// });
+
 app.post('/delete', sub.delete);
 
 app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)、req=request。 res=response
@@ -147,8 +161,4 @@ app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)�
   });
 });
 
-// serverMiddleware導入で変更
-// app.listen(5000, function () { // port 5000をlistenする
-//   console.log('Example app listening on port 5000!'); // console.logによりファイル実行時にコンソールに文字表示させる
-// });
 export default app;
