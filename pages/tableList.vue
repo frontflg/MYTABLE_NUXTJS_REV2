@@ -47,15 +47,6 @@
 /* eslint-disable no-console */
 export default {
   name: 'TableList',
-  async asyncData ({ $axios }) {
-    try {
-      const lists = await $axios.$get('/api')
-      return { lists }
-    } catch (e) {
-      console.log(e.errorCode) // eslint-disable-line no-console
-      window.alert(e)
-    }
-  },
   data () {
     return {
       search: '',
@@ -80,7 +71,22 @@ export default {
       lists: []
     }
   },
+  created () {
+    if (typeof window !== 'undefined') {
+      this.searchData()
+    }
+  },
   methods: {
+    async searchData () {
+      try {
+        const sql = 'SELECT TABLE_NAME,TABLE_COMMENT,TABLE_ROWS,CREATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "testdb"'
+        const res = await this.$axios.$get('/api?sql=' + sql)
+        this.lists = res
+      } catch (e) {
+        console.log(e.errorCode) // eslint-disable-line no-console
+        window.alert(e)
+      }
+    },
     downloadData () {
       let csv = 'テーブルID,テーブル名,件数,作成日\n'
       this.lists.forEach(function (el) {

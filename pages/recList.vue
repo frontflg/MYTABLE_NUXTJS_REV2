@@ -154,8 +154,24 @@ export default {
     }
   },
   async fetch () {
-    const url = 'http://localhost:3000/api/recList?tbl=' + this.inTblId
-    this.headers = await fetch(url).then(res => res.json())
+    let sql = 'SELECT CASE WHEN C.COLUMN_COMMENT = null OR C.COLUMN_COMMENT = "" '
+    sql += ' THEN C.COLUMN_NAME ELSE C.COLUMN_COMMENT END AS text,C.COLUMN_NAME AS value,'
+    sql += ' C.CHARACTER_MAXIMUM_LENGTH * 7 AS width,C.DATA_TYPE as datatype,'
+    sql += ' C.CHARACTER_MAXIMUM_LENGTH as dataleng,C.IS_NULLABLE as nullabl'
+    sql += ' FROM information_schema.COLUMNS C'
+    sql += ' WHERE C.TABLE_NAME ="' + this.inTblId + '" ORDER BY C.ORDINAL_POSITION'
+    this.headers = await fetch('http://localhost:3000/api?sql=' + sql).then(res => res.json())
+    for (const item in this.headers) {
+      if (this.headers[item].datatype === 'date') {
+        this.headers[item].width = 110
+      }
+      if (this.headers[item].width < 75) {
+        this.headers[item].width = 75
+      }
+      if (this.headers[item].width > 500) {
+        this.headers[item].width = 500
+      }
+    }
   },
   created () {
     if (typeof window !== 'undefined') {
@@ -164,16 +180,9 @@ export default {
   },
   methods: {
     async searchData () {
-      if (!this.inTblId) {
-        window.alert('検索キーが未設定です！')
-        return
-      }
       try {
-        const res = await this.$axios.$get('/api/search', {
-          params: {
-            tbl: this.inTblId
-          }
-        })
+        const sql = 'SELECT * FROM ' + this.inTblId
+        const res = await this.$axios.$get('/api?sql=' + sql)
         this.lists = res
         for (const item in this.lists) {
           for (const subItem in this.lists[item]) {
@@ -181,9 +190,7 @@ export default {
               const str = this.lists[item][subItem]
               if (str !== null && str.indexOf('T15:00:00.000Z') > 0) {
                 const dt = new Date(Date.parse(str))
-                const month = ('0' + (dt.getMonth() + 1)).slice(-2)
-                const day = ('0' + dt.getDate()).slice(-2)
-                this.lists[item][subItem] = dt.getFullYear() + '-' + month + '-' + day
+                this.lists[item][subItem] = this.$dayjs(dt).locale('ja').format('YYYY-MM-DD')
               }
             } catch (e) { } // 握りつぶす
           }
@@ -228,8 +235,7 @@ export default {
               window.alert(this.rowItems[i].name + 'が数値ではありません。')
               return false
             }
-            // 数値の桁数は、COLUMN_TYPE の()の中の数字で確認できるが、数字部分取得が複雑になるので、今回そこまではしない
-            // 例えば以下かと（小数点以下ありの場合が未対応で不完全）
+            // 例えば以下
             // if (str.length > this.headers[i].coltype.replace(/[^0-9]/g,'')) {
             //   window.alert(this.rowItems[i].name + 'が桁数オーバーしています。')
             //   return false
@@ -240,7 +246,7 @@ export default {
               return false
             }
           } else {
-            // 以下のアラームが出たらデータ型のチェックの追加を検討する
+            // 以下のアラームが出たらチェックを検討する
             window.alert(i + ' ' + type + 'は、チェック未実装')
           }
         } else if (this.headers[i].nullabl === 'NO') {

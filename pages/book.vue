@@ -350,47 +350,32 @@ export default {
   },
   created () {
     if (typeof window !== 'undefined') {
-      this.searchData()
+      this.searchDate()
     }
   },
   methods: {
-    async searchData () {
+    async searchDate () {
       if (!this.inIsbn13) {
         window.alert('検索キーが未設定です！' + this.inIsbn13)
         return
       }
       try {
-        const res = await this.$axios.$get('/api/booksearch', {
-          params: {
-            id: this.inIsbn13
-          }
-        })
+        const sql = 'select * from booklog where ISBN13 = "' + this.inIsbn13 + '"'
+        const res = await this.$axios.$get('/api?sql=' + sql)
         this.book = res
         this.inIsbn10 = this.book[0].ISBN10
         this.inBookName = this.book[0].BookName
         this.inAuthor = this.book[0].Author
         this.inPublisher = this.book[0].Publisher
         this.inGenre = this.book[0].Genre
-        if (this.book[0].IDATE) {
-          if (this.book[0].IDATE === '0000-00-00') {
-            this.inIssueDate = ''
-          } else {
-            this.inIssueDate = this.book[0].IDATE
-          }
+        if (this.book[0].IssueDate) {
+          this.inIssueDate = this.$dayjs(this.book[0].IssueDate).locale('ja').format('YYYY-MM-DD')
         }
-        if (this.book[0].GDATE) {
-          if (this.book[0].GDATE === '0000-00-00') {
-            this.inGetDate = ''
-          } else {
-            this.inGetDate = this.book[0].GDATE
-          }
+        if (this.book[0].GetDate) {
+          this.inGetDate = this.$dayjs(this.book[0].GetDate).locale('ja').format('YYYY-MM-DD')
         }
-        if (this.book[0].RDATE) {
-          if (this.book[0].RDATE === '0000-00-00') {
-            this.inReadDate = ''
-          } else {
-            this.inReadDate = this.book[0].RDATE
-          }
+        if (this.book[0].ReadDate) {
+          this.inReadDate = this.$dayjs(this.book[0].ReadDate).locale('ja').format('YYYY-MM-DD')
         }
         if (this.book[0].Ownership === 1) {
           this.select = '所有'
@@ -509,11 +494,9 @@ export default {
       const answer = window.confirm('削除してもいいですか？')
       if (answer) {
         try {
-          await this.$axios.$get('/api/bookdelete', {
-            params: {
-              id: this.inIsbn13
-            }
-          })
+          const sql = 'delete from booklog where ISBN13 ="' + this.inIsbn13 + '"'
+          const res = await this.$axios.$get('/api?sql=' + sql)
+          return res
         } catch (e) {
           console.log(e.errorCode) // eslint-disable-line no-console
           window.alert(e)

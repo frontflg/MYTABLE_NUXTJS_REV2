@@ -47,8 +47,8 @@
       persistent
     >
       <v-img
-        max-width="350"
         :src="imgUrl"
+        max-width="350"
       />
       <v-row no-gutters justify="center">
         <v-btn
@@ -121,15 +121,6 @@
 /* eslint-disable no-console */
 export default {
   name: 'BooklogList',
-  async asyncData ({ $axios }) {
-    try {
-      const lists = await $axios.$get('/api/booklog')
-      return { lists }
-    } catch (e) {
-      console.log(e.errorCode) // eslint-disable-line no-console
-      window.alert(e)
-    }
-  },
   data () {
     return {
       search: '',
@@ -166,15 +157,33 @@ export default {
         },
         {
           text: '発行日',
-          value: 'IDATE',
-          width: '125'
+          value: 'IssueDate',
+          width: '110'
         }
       ],
       lists: [],
       imgUrl: ''
     }
   },
+  created () {
+    if (typeof window !== 'undefined') {
+      this.searchData()
+    }
+  },
   methods: {
+    async searchData () {
+      try {
+        const sql = 'select *,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog order by GetDate desc'
+        const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
+        this.lists = res
+        for (const item in this.lists) {
+          this.lists[item].IssueDate = this.$dayjs(this.lists[item].IssueDate).locale('ja').format('YYYY-MM-DD')
+        }
+      } catch (e) {
+        console.log(e.errorCode) // eslint-disable-line no-console
+        window.alert(e)
+      }
+    },
     downloadData () {
       let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
       this.lists.forEach(function (el) {
@@ -203,11 +212,9 @@ export default {
       }
       this.dialog = false
       try {
-        await this.$axios.$get('/api/bookinsert', {
-          params: {
-            id: this.inIsbn13
-          }
-        })
+        const sql = 'insert into booklog (ISBN13,BookName) values ("' + this.inIsbn13 + '","書名")'
+        const res = await this.$axios.$get('/api?sql=' + sql)
+        return res
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)

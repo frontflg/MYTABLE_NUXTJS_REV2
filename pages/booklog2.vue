@@ -91,16 +91,6 @@
 /* eslint-disable no-console */
 export default {
   name: 'BooklogList',
-  async asyncData ({ $axios }) {
-    try {
-      // const lists = await $axios.$get('http://localhost:3000/api/booklog')
-      const lists = await $axios.$get('/api/booklog')
-      return { lists }
-    } catch (e) {
-      console.log(e.errorCode) // eslint-disable-line no-console
-      window.alert(e)
-    }
-  },
   data () {
     return {
       search: '',
@@ -111,7 +101,23 @@ export default {
       imgUrl: ''
     }
   },
+  created () {
+    if (typeof window !== 'undefined') {
+      this.searchData()
+    }
+  },
   methods: {
+    async searchData () {
+      try {
+        const sql = 'select * from booklog order by GetDate desc'
+        const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
+        this.lists = res
+      } catch (e) {
+        console.log(e.errorCode) // eslint-disable-line no-console
+        window.alert(e)
+      }
+    },
+
     downloadData () {
       let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
       this.lists.forEach(function (el) {
@@ -140,12 +146,9 @@ export default {
       }
       this.dialog = false
       try {
-        // await this.$axios.$get('http://localhost:3000/api/bookinsert', {
-        await this.$axios.$get('/api/bookinsert', {
-          params: {
-            id: this.inIsbn13
-          }
-        })
+        const sql = 'insert into booklog (ISBN13,BookName) values ("' + this.inIsbn13 + '","書名")'
+        const res = await this.$axios.$get('/api?sql=' + sql)
+        return res
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
@@ -160,19 +163,6 @@ export default {
 </script>
 
 <style lang="scss">
-.v-data-table th {
-  background: #8C9EFF;
-}
-.v-data-table td {
-  background: #E8F5E9;
-  border: 1px #BDBDBD solid;
-}
-.v-data-table tr:nth-child(odd) td {
-  background: #F5F5F5;
-}
-.v-data-table tr:hover td {
-  background-color: #FFFF8D;
-}
 .toc-view {
   background-color: #e6f2ff;
   border-radius: 13px;
