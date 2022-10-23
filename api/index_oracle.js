@@ -153,7 +153,7 @@ app.post('/update', function(req, res) {
   });
 };
 
-// 汎用テーブル更新処理
+// 汎用テーブル削除処理
 app.post('/delete', function(req, res) {
   const id = req.query.id;
   const name = req.body[0].name;
