@@ -82,12 +82,6 @@
       <v-col>
         <v-card-actions>
           <v-btn
-            class="primary"
-            @click="downloadData()"
-          >
-            CSV
-          </v-btn>
-          <v-btn
             class="success"
             @click="dialogOpen()"
           >
@@ -153,19 +147,6 @@ export default {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
       }
-    },
-    downloadData () {
-      let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
-      this.lists.forEach(function (el) {
-        csv += el.ISBN13 + ',' + el.BookName + ',' + el.Author + ',' +
-        el.Publisher + ',' + el.Purchase + ',' +
-        el.Genre + ',' + el.GDATE + '\n'
-      })
-      const anchor = document.createElement('a')
-      anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv)
-      anchor.target = '_blank'
-      anchor.download = 'DATA_LIST_' + new Date().toISOString().substr(0, 10) + '.csv'
-      anchor.click()
     },
     prevPage () {
       if (this.inPageNo === 1) {
