@@ -41,12 +41,44 @@
       </v-card>
     </v-dialog>
     <v-row>
-      <v-col cols="10">
+      <v-col cols="2">
         <v-card-title>
           BOOKLOG
-          <v-spacer />
         </v-card-title>
       </v-col>
+      <v-col cols="2">
+        <v-text-field
+          v-model="inPageNo"
+          label="PAGE："
+          type="number"
+          background-color="white"
+          clearable
+          solo
+          dense
+          maxlength="2"
+        />
+      </v-col>
+      <v-col cols="3">
+        <v-btn
+          class="accent"
+          @click="searchData()"
+        >
+          検索
+        </v-btn>
+        <v-btn
+          class="light-blue lighten-2"
+          @click="prevPage()"
+        >
+          PREV
+        </v-btn>
+        <v-btn
+          class="orange darken-4"
+          @click="nextPage()"
+        >
+          NEXT
+        </v-btn>
+      </v-col>
+      <v-col cols="3" />
       <v-col>
         <v-card-actions>
           <v-btn
@@ -64,7 +96,7 @@
         </v-card-actions>
       </v-col>
     </v-row>
-    <v-row dense class="toc-view" width="100%" max-height="350">
+    <v-row dense class="toc-view" width="100%" max-height="300">
       <v-col
         v-for="(item, i) in lists"
         :key="i"
@@ -93,8 +125,8 @@ export default {
   name: 'BooklogList',
   data () {
     return {
-      search: '',
       dialog: false,
+      inPageNo: 1,
       inIsbn13: '',
       selRow: 0,
       lists: [],
@@ -109,7 +141,11 @@ export default {
   methods: {
     async searchData () {
       try {
-        const sql = 'select * from booklog order by GetDate desc'
+        if (this.inPageNo < 1) {
+          this.inPageNo = 1
+        }
+        const stNo = this.inPageNo * 12 - 11
+        const sql = 'select * from booklog order by GetDate desc limit ' + stNo + ', 12'
         const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
         this.lists = res
       } catch (e) {
@@ -117,7 +153,6 @@ export default {
         window.alert(e)
       }
     },
-
     downloadData () {
       let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
       this.lists.forEach(function (el) {
@@ -130,6 +165,17 @@ export default {
       anchor.target = '_blank'
       anchor.download = 'DATA_LIST_' + new Date().toISOString().substr(0, 10) + '.csv'
       anchor.click()
+    },
+    prevPage () {
+      if (this.inPageNo === 1) {
+        return
+      }
+      this.inPageNo = this.inPageNo - 1
+      this.searchData()
+    },
+    nextPage () {
+      this.inPageNo = this.inPageNo + 1
+      this.searchData()
     },
     dialogOpen () {
       this.inIsbn13 = ''
