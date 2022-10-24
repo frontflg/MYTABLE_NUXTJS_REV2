@@ -174,6 +174,9 @@ export default {
       this.searchData()
     },
     nextPage () {
+      if (this.lists.length < 12) {
+        return
+      }
       this.inPageNo = this.inPageNo + 1
       this.searchData()
     },
