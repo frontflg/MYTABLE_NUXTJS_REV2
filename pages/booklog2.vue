@@ -111,6 +111,7 @@
           <v-card-actions class="mb-5">
             <a :href="`http://localhost:3000/book?id=${item.ISBN13}`">
               <v-img :src="`https://images-na.ssl-images-amazon.com/images/I/${item.CoverImg}`" max-width="175" />
+              <!-- v-img :src="`https://cover.openbd.jp//${item.ISBN13}.jpg`" max-width="175" / -->
             </a>
           </v-card-actions>
         </v-card>
