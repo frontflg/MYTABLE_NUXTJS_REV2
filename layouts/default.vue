@@ -121,6 +121,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'BOOKLOG',
           to: '/booklog'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'BOOKLOG2',
+          to: '/booklog2'
         }
       ],
       miniVariant: false,
@@ -135,5 +140,21 @@ export default {
 <style scoped>
 .v-application {
   background-color: #e6f2ff;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+.page-enter-active,
+.page-leave-active {
+  transition: opacity .4s;
+}
+.layout-enter,
+.layout-leave-active {
+  opacity: 0;
+}
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity .4s;
 }
 </style>
