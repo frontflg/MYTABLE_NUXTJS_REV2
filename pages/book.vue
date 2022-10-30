@@ -445,27 +445,40 @@ export default {
       } else {
         this.inOwnership = 0
       }
+      let sql = 'UPDATE booklog SET ISBN10 = "' + this.inIsbn10
+      sql += '", BookName = "' + this.inBookName
+      sql += '", Author = "' + this.inAuthor
+      sql += '", Publisher = "' + this.inPublisher
+      sql += '", Genre = "' + this.inGenre
+      if (this.inIssueDate !== '') {
+        sql += '", IssueDate = "0000/00/00'
+      } else {
+        sql += '", IssueDate = "' + this.inIssueDate
+      }
+      if (this.inGetDate !== '') {
+        sql += '", GetDate = "0000/00/00'
+      } else {
+        sql += '", GetDate = "' + this.inGetDate
+      }
+      if (this.inReadDate !== '') {
+        sql += '", ReadDate = "0000/00/00'
+      } else {
+        sql += '", ReadDate = "' + this.inReadDate
+      }
+      sql += '", Ownership = ' + this.inOwnership
+      if (this.inPurchase === '') {
+        sql += ', Purchase = null'
+      } else {
+        sql += ', Purchase = ' + this.inPurchase
+      }
+      sql += ', Library = "' + this.inLibrary
+      sql += '", Overview = "' + this.inOverview
+      sql += '", Impressions = "' + this.inImpressions
+      sql += '", State = "' + this.inState
+      sql += '", CoverImg = "' + this.inCoverImg
+      sql += '" where ISBN13 = "' + this.inIsbn13 + '"'
       try {
-        await this.$axios.$post('/bookupdate',
-          {
-            ISBN13: this.inIsbn13,
-            ISBN10: this.inIsbn10,
-            BookName: this.inBookName,
-            Author: this.inAuthor,
-            Publisher: this.inPublisher,
-            Genre: this.inGenre,
-            IssueDate: this.inIssueDate,
-            GetDate: this.inGetDate,
-            ReadDate: this.inReadDate,
-            Ownership: this.inOwnership,
-            Purchase: this.inPurchase,
-            Library: this.inLibrary,
-            Overview: this.inOverview,
-            Impressions: this.inImpressions,
-            State: this.inState,
-            CoverImg: this.inCoverImg
-          }
-        )
+        await this.$axios.$get('/api?sql=' + sql)
         window.alert('更新処理を実行しました。')
         this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
       } catch (e) {
