@@ -168,7 +168,7 @@ export default {
     },
     insertData () {
       this.insertBook()
-      window.location.href = 'http://localhost:3000/book?id=' + this.inIsbn13
+      this.updateData()
     },
     async insertBook () {
       if (!this.inIsbn13) {
@@ -188,6 +188,9 @@ export default {
     },
     updateData () {
       window.location.href = 'http://localhost:3000/book?id=' + this.inIsbn13
+      return new Promise((resolve) => {
+        // Wait for broswer to redirect...
+      })
     }
   }
 }
