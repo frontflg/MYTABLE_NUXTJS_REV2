@@ -1,5 +1,5 @@
 <template>
-  <dev>
+  <div>
     <!-- ダイアログ：ISBN13入力 -->
     <v-dialog
       v-model="dialog"
@@ -111,7 +111,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </dev>
+  </div>
 </template>
 
 <script>
