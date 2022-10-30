@@ -34,38 +34,42 @@ app.post('/bookupdate', function (req, res) { // app.post...(expressの構文)�
     throw error; // エラー処理
   }
   console.log('UPDATE ' + isbn13);
-  const isbn10    = req.body.ISBN10;
-  const bookName  = req.body.BookName;
-  const author    = req.body.Author;
-  const publisher = req.body.Publisher;
-  const genre     = req.body.Genre;
-  let issueDate = '0000/00/00';
+  let sql = 'UPDATE booklog SET ISBN10 = "' + req.body.ISBN10;
+  sql += '", BookName = "'  + req.body.BookName;
+  sql += '", Author = "'    + req.body.Author;
+  sql += '", Publisher = "' + req.body.Publisher;
+  sql += '", Genre = "'     + req.body.Genre;
   if (req.body.IssueDate !== '') {
-    issueDate = req.body.IssueDate;
+    sql += '", IssueDate = "0000/00/00';
+  } else {
+    sql += '", IssueDate = "'  + req.body.IssueDate;
   }
-  let getDate = '0000/00/00';
   if (req.body.GetDate !== '') {
-    getDate = req.body.GetDate;
+    sql += '", GetDate = "0000/00/00';
+  } else {
+    sql += '", GetDate = "'    + req.body.GetDate;
   }
-  let readDate = '0000/00/00';
   if (req.body.ReadDate !== '') {
-    readDate = req.body.ReadDate;
+    sql += '", ReadDate = "0000/00/00';
+  } else {
+    sql += '", ReadDate = "'    + req.body.ReadDate;
   }
-  const ownership = req.body.Ownership;
-  const purchase  = req.body.Purchase;
-  const library   = req.body.Library;
-  const overview  = req.body.Overview;
-  const impress   = req.body.Impressions;
-  const state     = req.body.State;
-  const coverImg  = req.body.CoverImg;
-  const sql = 'UPDATE booklog SET ISBN10 = ?, BookName = ?, Author = ?, Publisher = ?, Genre = ?,' +
-              ' IssueDate = ?,GetDate = ?, ReadDate = ?, Ownership = ?, Purchase = ?, Library = ?,' +
-              ' Overview  = ?, Impressions = ?, State = ?, CoverImg = ? where ISBN13 = ?';
+  sql += '", Ownership = '     + req.body.Ownership;
+  if (req.body.Purchase === '') {
+    sql += ', Purchase = null';
+  } else {
+    sql += ', Purchase = '     + req.body.Purchase;
+  }
+  sql +=  ', Library = "'      + req.body.Library;
+  sql += '", Overview = "'     + req.body.Overview;
+  sql += '", Impressions = "'  + req.body.Impressions;
+  sql += '", State = "'        + req.body.State;
+  sql += '", CoverImg = "'     + req.body.CoverImg;
+  sql += '" where ISBN13 = "'  + isbn13 + '"';
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query(sql,[isbn10, bookName, author, publisher, genre, issueDate, getDate, readDate,
-                ownership, purchase, library, overview, impress, state, coverImg, isbn13],
-                function (error, results) {
+  connection.query(sql, function (error, results) {
     if (error) {
+      console.log(sql);
       throw error; // エラー処理
     } else {
       res.status(200).send();
