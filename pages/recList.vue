@@ -1,5 +1,5 @@
 <template>
-  <dev>
+  <div class="wrap">
     <!-- ダイアログ -->
     <v-dialog
       v-model="dialog"
@@ -118,7 +118,7 @@
       item-key="line"
       @click:row="rowClick"
     />
-  </dev>
+  </div>
 </template>
 
 <script>
@@ -327,5 +327,15 @@ export default {
 }
 .v-data-table tr:hover td {
   background-color: #FFFF8D;
+}
+.wrap {
+  animation: fadein 3s forwards;
+}
+@keyframes fadein {
+  0% {opacity: 0}
+  100% {opacity: 1}
+}
+body {
+  margin: 0;
 }
 </style>
