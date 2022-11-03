@@ -285,6 +285,12 @@
             <v-card-actions class="justify-end">
               <v-btn
                 class="info"
+                @click="home2()"
+              >
+                表紙一覧
+              </v-btn>
+              <v-btn
+                class="info"
                 @click="home()"
               >
                 戻る
@@ -524,6 +530,9 @@ export default {
     },
     home () {
       this.$router.push('/booklog')
+    },
+    home2 () {
+      this.$router.push('/booklog2')
     }
   }
 }
