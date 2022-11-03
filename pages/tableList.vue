@@ -32,7 +32,7 @@
       item-key="line"
     >
       <template #[`item.TABLE_NAME`]="{ item }">
-        <a :href="`http://localhost:3000/recList?tbl=${item.TABLE_NAME}`">
+        <a @click.stop="clickEdit(item)">
           <div style="font-size: 130%">{{ item.TABLE_NAME }}</div>
         </a>
       </template>
@@ -97,6 +97,9 @@ export default {
       anchor.target = '_blank'
       anchor.download = 'TABLE_LIST_' + new Date().toISOString().substr(0, 10) + '.csv'
       anchor.click()
+    },
+    clickEdit (item) {
+      this.$router.push('/recList?tbl=' + `${item.TABLE_NAME}`)
     }
   }
 }
