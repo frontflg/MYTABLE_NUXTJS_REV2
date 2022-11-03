@@ -452,21 +452,21 @@ export default {
       sql += '", Publisher = "' + this.inPublisher
       sql += '", Genre = "' + this.inGenre
       if (this.inIssueDate === '') {
-        sql += '", IssueDate = "0000/00/00'
+        sql += '", IssueDate = null'
       } else {
-        sql += '", IssueDate = "' + this.inIssueDate
+        sql += '", IssueDate = "' + this.inIssueDate + '"'
       }
       if (this.inGetDate === '') {
-        sql += '", GetDate = "0000/00/00'
+        sql += ', GetDate = null'
       } else {
-        sql += '", GetDate = "' + this.inGetDate
+        sql += ', GetDate = "' + this.inGetDate + '"'
       }
       if (this.inReadDate === '') {
-        sql += '", ReadDate = "0000/00/00'
+        sql += ', ReadDate = null'
       } else {
-        sql += '", ReadDate = "' + this.inReadDate
+        sql += ', ReadDate = "' + this.inReadDate + '"'
       }
-      sql += '", Ownership = ' + this.inOwnership
+      sql += ', Ownership = ' + this.inOwnership
       if (this.inPurchase === '') {
         sql += ', Purchase = null'
       } else {
