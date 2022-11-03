@@ -395,12 +395,7 @@ export default {
         this.inImpressions = this.book[0].Impressions
         this.inState = this.book[0].State
         this.inCoverImg = this.book[0].CoverImg
-        if (this.inCoverImg === null) {
-          this.imgUrl = 'https://cover.openbd.jp//' + this.inIsbn13 + '.jpg'
-        } else {
-          this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + this.inCoverImg
-        }
-        // :src="`${book[0].CoverImg}`"
+        this.imgUrl = 'https://images-fe.ssl-images-amazon.com/images/P/' + this.inIsbn10 + '.09.LZZZZZZZ'
         if (this.inBookName === '書名') {
           try {
             const res = await this.$axios.$get('https://www.googleapis.com/books/v1/volumes', {
