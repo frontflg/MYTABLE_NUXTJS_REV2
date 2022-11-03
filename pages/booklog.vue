@@ -134,6 +134,10 @@ export default {
           value: 'ISBN13'
         },
         {
+          text: 'ISBN10',
+          value: 'ISBN10'
+        },
+        {
           text: '書籍名',
           value: 'BookName'
         },
@@ -185,11 +189,10 @@ export default {
       }
     },
     downloadData () {
-      let csv = '\uFEFF' + 'ISBN13,書籍名,著者,出版社,価格,分類,発行日\n'
+      let csv = '\uFEFF' + 'ISBN13,ISBN10,書籍名,著者,出版社,価格,分類,発行日\n'
       this.lists.forEach(function (el) {
-        csv += el.ISBN13 + ',' + el.BookName + ',' + el.Author + ',' +
-        el.Publisher + ',' + el.Purchase + ',' +
-        el.Genre + ',' + el.GDATE + '\n'
+        csv += el.ISBN13 + ',' + el.ISBN10 + ',' + el.BookName + ',"' + el.Author + '",' +
+        el.Publisher + ',' + el.Purchase + ',' + el.Genre + ',' + el.IssueDate + '\n'
       })
       const anchor = document.createElement('a')
       anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv)
@@ -223,15 +226,12 @@ export default {
     },
     rowClick (row) {
       this.inIsbn13 = row.ISBN13
-      this.imgUrl = 'https://images-na.ssl-images-amazon.com/images/I/' + row.CoverImg
+      this.imgUrl = 'https://images-fe.ssl-images-amazon.com/images/P/' + row.ISBN10 + '.09.LZZZZZZZ'
       this.selRow = this.lists.indexOf(row)
       this.dialog2 = true
     },
     updateData () {
-      window.location.href = 'http://localhost:3000/book?id=' + this.inIsbn13
-      return new Promise((resolve) => {
-        // Wait for broswer to redirect...
-      })
+      this.$router.push('/book?id=' + this.inIsbn13)
     }
   }
 }
