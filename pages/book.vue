@@ -451,17 +451,17 @@ export default {
       sql += '", Author = "' + this.inAuthor
       sql += '", Publisher = "' + this.inPublisher
       sql += '", Genre = "' + this.inGenre
-      if (this.inIssueDate !== '') {
+      if (this.inIssueDate === '') {
         sql += '", IssueDate = "0000/00/00'
       } else {
         sql += '", IssueDate = "' + this.inIssueDate
       }
-      if (this.inGetDate !== '') {
+      if (this.inGetDate === '') {
         sql += '", GetDate = "0000/00/00'
       } else {
         sql += '", GetDate = "' + this.inGetDate
       }
-      if (this.inReadDate !== '') {
+      if (this.inReadDate === '') {
         sql += '", ReadDate = "0000/00/00'
       } else {
         sql += '", ReadDate = "' + this.inReadDate
