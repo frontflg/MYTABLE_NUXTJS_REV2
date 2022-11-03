@@ -104,8 +104,7 @@
         >
           <v-card-actions class="mb-5">
             <a @click="updateData(i)">
-              <v-img :src="`https://images-na.ssl-images-amazon.com/images/I/${item.CoverImg}`" max-width="175" />
-              <!-- v-img :src="`https://cover.openbd.jp//${item.ISBN13}.jpg`" max-width="175" / -->
+              <v-img :src="`https://images-fe.ssl-images-amazon.com/images/P/${item.ISBN10}.09.LZZZZZZZ`" max-width="160" />
             </a>
           </v-card-actions>
         </v-card>
