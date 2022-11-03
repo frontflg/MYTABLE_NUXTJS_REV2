@@ -103,7 +103,7 @@
           height="90%"
         >
           <v-card-actions class="mb-5">
-            <a :href="`http://localhost:3000/book?id=${item.ISBN13}`">
+            <a @click="updateData(i)">
               <v-img :src="`https://images-na.ssl-images-amazon.com/images/I/${item.CoverImg}`" max-width="175" />
               <!-- v-img :src="`https://cover.openbd.jp//${item.ISBN13}.jpg`" max-width="175" / -->
             </a>
@@ -129,6 +129,10 @@ export default {
     }
   },
   created () {
+    this.inPageNo = this.$store.state.pageno.pageNo
+    if (isNaN(this.inPageNo)) {
+      this.inPageNo = 1
+    }
     if (typeof window !== 'undefined') {
       this.searchData()
     }
@@ -136,8 +140,9 @@ export default {
   methods: {
     async searchData () {
       try {
-        if (this.inPageNo < 1) {
+        if (this.inPageNo < 1 || isNaN(this.inPageNo)) {
           this.inPageNo = 1
+          this.$store.dispatch('pageno/setPageNo', this.inPageNo)
         }
         const stNo = this.inPageNo * 12 - 11
         const sql = 'select * from booklog order by GetDate desc limit ' + stNo + ', 12'
@@ -153,6 +158,7 @@ export default {
         return
       }
       this.inPageNo = this.inPageNo - 1
+      this.$store.dispatch('pageno/setPageNo', this.inPageNo)
       this.searchData()
     },
     nextPage () {
@@ -160,6 +166,7 @@ export default {
         return
       }
       this.inPageNo = this.inPageNo + 1
+      this.$store.dispatch('pageno/setPageNo', this.inPageNo)
       this.searchData()
     },
     dialogOpen () {
@@ -187,10 +194,8 @@ export default {
       }
     },
     updateData () {
-      window.location.href = 'http://localhost:3000/book?id=' + this.inIsbn13
-      return new Promise((resolve) => {
-        // Wait for broswer to redirect...
-      })
+      this.$store.dispatch('pageNo/setPageNo', this.inPageNo)
+      this.$router.push('/book?id=' + this.lists[itemno].ISBN13)
     }
   }
 }
