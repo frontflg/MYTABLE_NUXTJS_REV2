@@ -97,10 +97,18 @@
       </v-col>
     </v-row>
     <v-data-table
+      height="500"
       :headers="headers"
+      fixed-header
       :items="lists"
       :search="search"
       item-key="line"
+      :items-per-page="10"
+      :footer-props="{
+        'items-per-page-options':[5, 10, 25, -1],
+        'items-per-page-text':'表示件数'
+      }"
+      dense
       @click:row="rowClick"
     >
       <!-- template #[`item.ISBN13`]="{ item }">
@@ -162,7 +170,7 @@ export default {
         {
           text: '発行日',
           value: 'IssueDate',
-          width: '110'
+          width: '120'
         }
       ],
       lists: [],
