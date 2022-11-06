@@ -26,10 +26,16 @@
       </v-col>
     </v-row>
     <v-data-table
+      height="500"
       :headers="headers"
       :items="lists"
       :search="search"
       item-key="line"
+      :items-per-page="10"
+      :footer-props="{
+        'items-per-page-options':[5, 10, 25, -1],
+        'items-per-page-text':'表示件数'
+      }"
     >
       <template #[`item.TABLE_NAME`]="{ item }">
         <a @click.stop="clickEdit(item)">
