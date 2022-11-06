@@ -112,10 +112,19 @@
       </v-col>
     </v-row>
     <v-data-table
+      ref="itables"
+      height="500"
       :headers="headers"
+      fixed-header
       :items="lists"
       :search="search"
       item-key="line"
+      :items-per-page="10"
+      :footer-props="{
+        'items-per-page-options':[5, 10, 25, -1],
+        'items-per-page-text':'表示件数'
+      }"
+      dense
       @click:row="rowClick"
     />
   </div>
@@ -163,10 +172,10 @@ export default {
     this.headers = await fetch('http://localhost:3000/api?sql=' + sql).then(res => res.json())
     for (const item in this.headers) {
       if (this.headers[item].datatype === 'date') {
-        this.headers[item].width = 110
+        this.headers[item].width = 120
       }
-      if (this.headers[item].width < 75) {
-        this.headers[item].width = 75
+      if (this.headers[item].width < 80) {
+        this.headers[item].width = 80
       }
       if (this.headers[item].width > 500) {
         this.headers[item].width = 500
