@@ -169,7 +169,8 @@ export default {
     sql += ' C.CHARACTER_MAXIMUM_LENGTH as dataleng,C.IS_NULLABLE as nullabl'
     sql += ' FROM information_schema.COLUMNS C'
     sql += ' WHERE C.TABLE_NAME ="' + this.inTblId + '" ORDER BY C.ORDINAL_POSITION'
-    this.headers = await fetch('http://localhost:3000/api?sql=' + sql).then(res => res.json())
+    const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
+    this.headers = res[0]
     for (const item in this.headers) {
       if (this.headers[item].datatype === 'date') {
         this.headers[item].width = 120
@@ -192,7 +193,7 @@ export default {
       try {
         const sql = 'SELECT * FROM ' + this.inTblId
         const res = await this.$axios.$get('/api?sql=' + sql)
-        this.lists = res
+        this.lists = res[0]
         for (const item in this.lists) {
           for (const subItem in this.lists[item]) {
             try {
