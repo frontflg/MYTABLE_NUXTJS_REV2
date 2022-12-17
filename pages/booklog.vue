@@ -187,7 +187,7 @@ export default {
       try {
         const sql = 'select *,ROW_NUMBER() OVER (ORDER BY ISBN13) AS line from booklog order by GetDate desc'
         const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
-        this.lists = res
+        this.lists = res[0]
         for (const item in this.lists) {
           this.lists[item].IssueDate = this.$dayjs(this.lists[item].IssueDate).locale('ja').format('YYYY-MM-DD')
         }
@@ -225,7 +225,7 @@ export default {
       try {
         const sql = 'insert into booklog (ISBN13,BookName) values ("' + this.inIsbn13 + '","書名")'
         const res = await this.$axios.$get('/api?sql=' + sql)
-        return res
+        return res[0]
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
