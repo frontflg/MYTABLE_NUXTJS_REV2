@@ -368,7 +368,7 @@ export default {
       try {
         const sql = 'select * from booklog where ISBN13 = "' + this.inIsbn13 + '"'
         const res = await this.$axios.$get('/api?sql=' + sql)
-        this.book = res
+        this.book = res[0]
         this.inIsbn10 = this.book[0].ISBN10
         this.inBookName = this.book[0].BookName
         this.inAuthor = this.book[0].Author
@@ -510,7 +510,7 @@ export default {
         try {
           const sql = 'delete from booklog where ISBN13 ="' + this.inIsbn13 + '"'
           const res = await this.$axios.$get('/api?sql=' + sql)
-          return res
+          return res[0]
         } catch (e) {
           console.log(e.errorCode) // eslint-disable-line no-console
           window.alert(e)
