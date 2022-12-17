@@ -146,7 +146,7 @@ export default {
         const stNo = this.inPageNo * 12 - 11
         const sql = 'select * from booklog order by GetDate desc limit ' + stNo + ', 12'
         const res = await this.$axios.$get('http://localhost:3000/api?sql=' + sql)
-        this.lists = res
+        this.lists = res[0]
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
@@ -185,7 +185,7 @@ export default {
       try {
         const sql = 'insert into booklog (ISBN13,BookName) values ("' + this.inIsbn13 + '","書名")'
         const res = await this.$axios.$get('/api?sql=' + sql)
-        return res
+        return res[0]
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
