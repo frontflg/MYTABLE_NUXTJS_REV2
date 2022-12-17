@@ -87,7 +87,7 @@ export default {
       try {
         const sql = 'SELECT TABLE_NAME,TABLE_COMMENT,TABLE_ROWS,CREATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "testdb"'
         const res = await this.$axios.$get('/api?sql=' + sql)
-        this.lists = res
+        this.lists = res[0]
       } catch (e) {
         console.log(e.errorCode) // eslint-disable-line no-console
         window.alert(e)
