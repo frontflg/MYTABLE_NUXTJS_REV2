@@ -14,9 +14,9 @@ const connection = oracledb.createConnection({ // 以下、各自のoracledbへ�
 app.get('/', function (req, res) { // app.get...(expressの構文)、req=request。 res=response
   const sql = req.query.sql;
   res.set({ 'Access-Control-Allow-Origin': '*' }); // この記載により、※1：CORSを許可する
-  connection.query(sql, function (error, results) {
-  if (error) throw error; // エラー処理
-    res.send(results);
+  connection.query(sql, function (error, results, fields) {
+    if (error) throw error; // エラー処理
+    res.status(200).send([results, fields]);
   });
 });
 
