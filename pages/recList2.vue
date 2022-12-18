@@ -181,12 +181,12 @@ export default {
         this.headers.splice(0)
         for (let i = 0; i < this.fields.length; i++) {
           let widthSize = this.fields[i].length * 2.5
-          if (this.fields[i].type === 7) { // datetime
-            widthSize = 110
-          } else if (this.fields[i].type === 10) { // date
+          if (this.fields[i].type === 10) { // date
             widthSize = 110
           } else if (this.fields[i].type === 11) { // time
             widthSize = 100
+          } else if (this.fields[i].type === 12) { // datetime
+            widthSize = 110
           } else if (widthSize < 100) {
             widthSize = 100
           } else if (widthSize > 500) {
@@ -211,24 +211,26 @@ export default {
           for (const subItem in this.lists[item]) {
             try {
               const str = this.lists[item][subItem]
-              if (str !== null && this.fields[i].type === 7) {
-                const dt = new Date(Date.parse(str))
-                this.lists[item][subItem] = this.$dayjs(dt).locale('ja').format('YYYY-MM-DD HH:mm:ss')
-              }
               if (str !== null && this.fields[i].type === 10) {
                 const dt = new Date(Date.parse(str))
                 this.lists[item][subItem] = this.$dayjs(dt).locale('ja').format('YYYY-MM-DD')
+              } else if (str !== null && this.fields[i].type === 12) {
+                const dt = new Date(Date.parse(str))
+                this.lists[item][subItem] = this.$dayjs(dt).locale('ja').format('YYYY-MM-DD HH:mm:ss')
               }
             } catch (e) { } // 握りつぶす
             i++
           }
         }
-        const sql2 = 'SELECT COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_NAME ="' + this.inTblId + '" ORDER BY ORDINAL_POSITION'
+        const sql2 = 'SELECT COLUMN_COMMENT,COLUMN_NAME FROM information_schema.COLUMNS' +
+          ' WHERE TABLE_NAME ="' + this.inTblId + '" ORDER BY ORDINAL_POSITION'
         const res2 = await this.$axios.$get('/api?sql=' + sql2)
         this.fields2 = res2[0]
         for (let i = 0; i < this.fields2.length; i++) {
-          if (this.fields2[i].COLUMN_COMMENT) {
-            this.headers[i].text = this.fields2[i].COLUMN_COMMENT
+          if (typeof this.headers[i] !== 'undefined') {
+            if (this.fields2[i].COLUMN_COMMENT && this.headers[i].text === this.fields2[i].COLUMN_NAME) {
+              this.headers[i].text = this.fields2[i].COLUMN_COMMENT
+            }
           }
         }
       } catch (e) {
@@ -281,11 +283,6 @@ export default {
             //   window.alert(this.rowItems[i].name + 'が桁数オーバーしています。')
             //   return false
             // }
-          } else if (type === 7) {
-            if (!str.match(/\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}/)) {
-              window.alert(this.rowItems[i].name + 'が日付時刻形式[YYYY-MM-DD HH:mm:ss]ではありません。')
-              return false
-            }
           } else if (type === 10) {
             if (!str.match(/\d{4}-\d{1,2}-\d{1,2}/)) {
               window.alert(this.rowItems[i].name + 'が日付形式[YYYY-MM-DD]ではありません。')
@@ -294,6 +291,11 @@ export default {
           } else if (type === 11) {
             if (!str.match(/\d{1,2}:\d{1,2}:\d{1,2}/)) {
               window.alert(this.rowItems[i].name + 'が時刻形式[HH:mm:ss]ではありません。')
+              return false
+            }
+          } else if (type === 12) {
+            if (!str.match(/\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}/)) {
+              window.alert(this.rowItems[i].name + 'が日付時刻形式[YYYY-MM-DD HH:mm:ss]ではありません。')
               return false
             }
           } else {
