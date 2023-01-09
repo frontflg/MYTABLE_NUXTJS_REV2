@@ -19,6 +19,7 @@
     "express": "^4.18.1",
     "mysql": "^2.18.1",
     "nuxt-edge": "latest",
+    "oracledb": "^5.5.0",
     "vue": "^2.6.14",
     "vue-json-excel": "^0.3.0",
     "vue-json-to-csv": "^1.1.8",
