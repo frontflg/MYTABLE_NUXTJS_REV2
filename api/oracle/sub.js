@@ -1,7 +1,7 @@
 const oracledb = require('oracledb');        // 今回はoracleを利用する
 const connection = oracledb.getConnection({  // 以下、各自のOracleへの接続情報を書く
-  user : 'testuser',
-  password : 'password',
+  user : 'myuser',
+  password : 'mypassword',
   connectString: 'localhost:1521/XEPDB1'
 });
 
